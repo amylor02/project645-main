@@ -1,0 +1,13 @@
+# local/generated project outputs
+/train_data_bvh/
+/reconstructed_bvh_data_euler/
+/reconstructed_bvh_data_pos/
+/reconstructed_bvh_data_quad/
+/previews/
+/synthesis/
+/report/
+/paper/
+/FOR_REPORT/
+/project_description/
+/autoencoder/
+/weights - Copy/
