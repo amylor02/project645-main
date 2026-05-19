@@ -29,16 +29,23 @@ Notes:
 - the positional scripts still assume CUDA explicitly, so use a CUDA-enabled PyTorch environment for the full baseline workflow,
 - the Euler and quaternion scripts are more tolerant of CPU fallback, but the intended setup is still GPU training.
 
+After cloning, run the three preprocessing scripts in section 6.1 first to create `train_data_pos/`, `train_data_euler/`, and `train_data_quad/` before trying to train or synthesize the direct baselines.
+
 ## 2. What is already included
 
 The repository already contains:
 
 - source BVH files in `train_data_bvh/`,
-- preprocessed NumPy datasets in `train_data_pos/`, `train_data_euler/`, and `train_data_quad/`,
 - pretrained checkpoints in `weights/`,
 - synthesis outputs and quantitative results in `synthesis/`.
 
-If you only want to generate motion from the shipped models, you can skip preprocessing and retraining.
+The generated representation folders are not the thing to assume after a fresh clone. Create them first by running all three scripts in section 6.1:
+
+- `python .\code\generate_training_pos_data.py ...`
+- `python .\code\generate_training_euler_data.py ...`
+- `python .\code\generate_training_quad_data.py ...`
+
+Even if you only want to synthesize from the shipped direct-baseline checkpoints, those preprocessing outputs are still needed because the synthesis scripts draw their seed clips from the generated representation datasets.
 
 ## 3. Pretrained models used in the quantitative tests
 
@@ -106,6 +113,8 @@ That command uses the same default experiment folders listed above unless you ov
 Use the same style names already present in the repo: `indian`, `martial`, or `salsa`.
 
 ### 6.1 Preprocess BVH into representation data
+
+Run these three commands first after cloning. The direct training and direct synthesis commands later in this README assume these generated folders already exist.
 
 Positional:
 
