@@ -31,25 +31,21 @@ Notes:
 
 After cloning, run the three preprocessing scripts in section 6.1 first to create `train_data_pos/`, `train_data_euler/`, and `train_data_quad/` before trying to train or synthesize the direct baselines.
 
-## 2. What is already included
+## 2. Before Running Synthesis Scripts
 
-The repository already contains:
-
-- source BVH files in `train_data_bvh/`,
-- pretrained checkpoints in `weights/`,
-- synthesis outputs and quantitative results in `synthesis/`.
-
-The generated representation folders are not the thing to assume after a fresh clone. Create them first by running all three scripts in section 6.1:
+The generated bvh data for each dataset are not in the repo. Create them first by running all three scripts in section 6.1:
 
 - `python .\code\generate_training_pos_data.py ...`
 - `python .\code\generate_training_euler_data.py ...`
 - `python .\code\generate_training_quad_data.py ...`
 
-Even if you only want to synthesize from the shipped direct-baseline checkpoints, those preprocessing outputs are still needed because the synthesis scripts draw their seed clips from the generated representation datasets.
-
 ## 3. Pretrained models used in the quantitative tests
 
+We recommend running the commands we provide, because the quantitative metrics script we wrote expects precise folder locations and naming conventions.
+
 The quantitative evaluator in `code/evaluate_quantitative_metrics.py` uses these checkpoint folders by default. If you pass a folder to a synthesis script, it automatically picks the latest `.weight` file in that folder.
+
+**THE REASON ALL QUATERNION MODEL MENTIONS INCLUDE THE SUFFIX "no-FK MSE" IS BECAUSE WE HAVE A VARIANT USING AN ADDITIONAL FK BASED LOSS, AND USING THE GEODESIC LOSS. THE MODEL WE USE AS THE QUATERNION BASED LSTM DOES NOT USE THE ADDITIONAL FK LOSS, BUT WE USE MSE LOSS RATHER THAN GEODESIC LOSS BECAUSE WE FOUND IT CONVERGED FASTER AND MAINTAINED THE SAME QUALITY OF RESULTS. FOR MORE DETAILS, REFER TO OUR REPORT!**
 
 | Representation       | Style   | Checkpoint folder                | Checkpoint used in `synthesis/quant/summary.json` |
 | -------------------- | ------- | -------------------------------- | ------------------------------------------------- |
@@ -67,6 +63,8 @@ The quantitative evaluator in `code/evaluate_quantitative_metrics.py` uses these
 
 The examples below use the same checkpoint folders that the quantitative evaluator uses. You can switch styles by changing `martial` to `indian` or `salsa` consistently in both the data folder and checkpoint folder.
 
+These are the commands you should run for each of the three models. 
+
 ### 4.1 Positional baseline
 
 ```bash
@@ -77,12 +75,6 @@ python .\code\synthesize_pos_motion.py --dances_folder .\train_data_pos\martial\
 
 ```bash
 python .\code\synthesize_euler_motion.py --dances_folder .\train_data_euler\martial\ --read_weight_path .\weights\euler\martial\ --write_bvh_motion_folder .\synthesis\euler\martial\ --in_frame 132 --out_frame 132 --batch_size 5 --initial_seq_len 20 --generate_frames_number 400
-```
-
-There is also a spelling-wrapper command if you want the deliverable name:
-
-```bash
-python .\code\synthise_euler_motion.py --dances_folder .\train_data_euler\martial\ --read_weight_path .\weights\euler\martial\ --write_bvh_motion_folder .\synthesis\euler\martial\ --in_frame 132 --out_frame 132 --batch_size 5 --initial_seq_len 20 --generate_frames_number 400
 ```
 
 ### 4.3 Quaternion baseline used by the quantitative runs
