@@ -1,7 +1,4 @@
 # local/generated project outputs
-/train_data_bvh/indian/
-/train_data_bvh/martial/
-/train_data_bvh/salsa/
 /reconstructed_bvh_data_euler/
 /reconstructed_bvh_data_pos/
 /reconstructed_bvh_data_quad/
